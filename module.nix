@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  nordVPNPkg = pkgs.callPackage ./nordvpn.nix;
+  nordVPNPkg = pkgs.callPackage ./nordvpn.nix {};
 in
 with lib; {
   options.services.nordvpn = {
@@ -22,7 +22,7 @@ with lib; {
   };
 
   config = mkIf config.services.nordvpn.enable {
-    environment.systemPackages = [ nordVPNPkgs ];
+    environment.systemPackages = [ nordVPNPkg ];
 
     users.groups.nordvpn = { };
 
