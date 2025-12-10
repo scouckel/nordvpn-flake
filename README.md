@@ -50,11 +50,14 @@ See [official documentation](https://support.nordvpn.com/hc/en-us/articles/20226
 
 ```bash
 # connect to a server
-nordvpn c [<country>|<server>|<country_code>|<city>|<group>|<country> <city>]
+nordvpn c
 
 # check status
 nordvpn status
 
 # disconnect
-nordvpn disconnect
+nordvpn d
+
+# rtfm
+man nordvpn
 ```
