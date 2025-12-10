@@ -7,7 +7,7 @@ with lib; {
     enable = mkOption {
       type = types.bool;
       default = false;
-      descripton = ''
+      description = ''
         Whether to enable the NordVPN daemon. Remember to add your user to the "nordvpn" group!
       '';
     };
@@ -15,7 +15,7 @@ with lib; {
     firewallChanges = mkOption {
       type = types.bool;
       default = true;
-      descripton = ''
+      description = ''
         Whether to enable the basic firewall changes for NordVPN.
       '';
     };
