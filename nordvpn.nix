@@ -1,35 +1,43 @@
 {
-  autoPatchelfHook,
   buildFHSEnvChroot,
-  dpkg,
   fetchurl,
   lib,
   stdenv,
-  sysctl,
-  iptables,
-  iproute2,
-  procps,
-  cacert,
   libxml2_13,
   libidn2,
   libnl,
   libcap_ng,
   sqlite,
-  wireguard-tools,
+  dpkgs,
+  autoPatchelfHook,
+  sysctl,
+  iptables,
+  iproute2,
+  procps,
+  cacert,
 }:
 
 let
+  pname = "nordvpn";
   version = "4.2.1";
 
   nordVPNBase = stdenv.mkDerivation {
     pname = "nordvpn-core";
     inherit version;
-
-    src = fetchurl {
-      url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_amd64.deb";
-      hash = "sha256-DMyNPc08txvkAB3QKK4ViHomsr3Z3l6JerUQ0zuRlro=";
-    };
-
+    
+    src =
+      if stdenv.hostPlatform.system == "x86_64-linux"
+      then fetchurl {
+        url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_amd64.deb";
+        hash = "";
+      }
+      else if stdenv.hostPlatform.system == "aarch64-linux"
+      then fetchurl {
+        url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_arm64.deb";
+        hash = "";
+      }
+      else throw "Unsupported platform: ${stdenv.hostPlatform.system}";
+      
     buildInputs = [
       libxml2_13
       libidn2
@@ -39,7 +47,7 @@ let
     ];
 
     nativeBuildInputs = [
-      dpkg
+      dpkgs
       autoPatchelfHook
       stdenv.cc.cc.lib
     ];
@@ -65,24 +73,21 @@ let
 
   nordVPNfhs = buildFHSEnvChroot {
     name = "nordvpnd";
-    runScript = "nordvpnd";
+    runScript = "${nordVPNBase}/bin/nordvpnd";
 
-    # hardcoded path to /sbin/ip
-    targetPkgs =
-      pkgs: with pkgs; [
-        nordVPNBase
-        sysctl
-        iptables
-        iproute2
-        procps
-        cacert
-        wireguard-tools
-      ];
+    targetPkgs = pkgs: with pkgs; [
+      nordVPNBase
+      sysctl
+      iptables
+      iproute2
+      procps
+      cacert
+      wireguard-tools
+    ];
   };
 in
 stdenv.mkDerivation {
-  pname = "nordvpn";
-  inherit version;
+  inherit pname version;
 
   dontUnpack = true;
   dontConfigure = true;
@@ -102,7 +107,7 @@ stdenv.mkDerivation {
     description = "CLI client for NordVPN";
     homepage = "https://www.nordvpn.com";
     license = licenses.unfreeRedistributable;
-    maintainers = with maintainers; [ scouckel ];
-    platforms = [ "x86_64-linux" ];
+    maintainers  = with maintainers; [ scouckel ];
+    platforms = ["x86_64-linux" "aarch64-linux"];
   };
 }
