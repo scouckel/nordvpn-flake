@@ -28,7 +28,7 @@ with lib; {
 
     systemd = {
       services.nordvpn = {
-        description = "NordVPN daemon";
+        description = "NordVPN daemon.";
         serviceConfig = {
           ExecStart = "${nordVPNPkg}/bin/nordvpnd";
           ExecStartPre = pkgs.writeShellScript "nordvpn-start" ''
@@ -42,7 +42,7 @@ with lib; {
           Restart = "on-failure";
           RestartSec = 5;
           RuntimeDirectory = "nordvpn";
-          RuntimeDirectoryNode = "0750";
+          RuntimeDirectoryMode = "0750";
           Group = "nordvpn";
         };
         wantedBy = [ "multi-user.target" ];
