@@ -8,7 +8,7 @@
   libnl,
   libcap_ng,
   sqlite,
-  dpkgs,
+  dpkg,
   autoPatchelfHook,
   sysctl,
   iptables,
@@ -26,17 +26,17 @@ let
     inherit version;
     
     src =
-      if stdenv.hostPlatform.system == "x86_64-linux"
-      then fetchurl {
-        url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_amd64.deb";
-        hash = "";
-      }
-      else if stdenv.hostPlatform.system == "aarch64-linux"
-      then fetchurl {
-        url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_arm64.deb";
-        hash = "";
-      }
-      else throw "Unsupported platform: ${stdenv.hostPlatform.system}";
+    if stdenv.hostPlatform.system == "x86_64-linux"
+    then fetchurl {
+      url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_amd64.deb";
+      hash = "sha256-DMyNPc08txvkAB3QKK4ViHomsr3Z3l6JerUQ0zuRlro=";
+    }
+    else if stdenv.hostPlatform.system == "aarch64-linux"
+    then fetchurl {
+      url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_arm64.deb";
+      hash = "sha256-/doGY/xm4Da0TffgbSjCRp96yrv7Xz72b7eM9u8CPas=";
+    }
+    else throw "Unsupported platform: ${stdenv.hostPlatform.system}";
       
     buildInputs = [
       libxml2_13
@@ -47,7 +47,7 @@ let
     ];
 
     nativeBuildInputs = [
-      dpkgs
+      dpkg
       autoPatchelfHook
       stdenv.cc.cc.lib
     ];
