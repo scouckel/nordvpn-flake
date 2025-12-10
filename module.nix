@@ -16,7 +16,7 @@ with lib; {
       type = types.bool;
       default = true;
       descripton = ''
-        Whether to enable the NordVPN daemon.
+        Whether to enable the basic firewall changes for NordVPN.
       '';
     };
   };
