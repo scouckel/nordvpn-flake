@@ -19,7 +19,7 @@
 
 let
   pname = "nordvpn";
-  version = "4.2.1";
+  version = "4.2.3";
 
   nordVPNBase = stdenv.mkDerivation {
     pname = "nordvpn-core";
@@ -29,12 +29,12 @@ let
     if stdenv.hostPlatform.system == "x86_64-linux"
     then fetchurl {
       url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_amd64.deb";
-      hash = "sha256-DMyNPc08txvkAB3QKK4ViHomsr3Z3l6JerUQ0zuRlro=";
+      hash = "sha256-LcTQEqaP1+UeBxi+gqQAuQKKzVgzMWSb7rMEB6qc6hk=";
     }
     else if stdenv.hostPlatform.system == "aarch64-linux"
     then fetchurl {
       url = "https://repo.nordvpn.com/deb/nordvpn/debian/pool/main/n/nordvpn/nordvpn_${version}_arm64.deb";
-      hash = "sha256-/doGY/xm4Da0TffgbSjCRp96yrv7Xz72b7eM9u8CPas=";
+      hash = "sha256-P7o7p7kDyLvjYEcqwiBxgQgH0KAWVOF/JNCCL8JHH+M=";
     }
     else throw "Unsupported platform: ${stdenv.hostPlatform.system}";
       
